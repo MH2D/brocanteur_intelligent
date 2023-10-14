@@ -21,7 +21,7 @@ preprocess = transforms.Compose([
 ])
 
 # Define the class labels for the ImageNet dataset (ResNet-18 output)
-class_labels = joblib.load(f'{DATA_PATH}class_names_kamerastore.sav')
+class_labels = joblib.load(f'{DATA_PATH}all_kamera_store_models.sav')
 
 def classify_image(image):
     input_tensor = preprocess(image)
