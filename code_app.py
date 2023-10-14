@@ -30,6 +30,7 @@ def classify_image(image):
     with torch.no_grad():
         output = model(input_batch)
     _, predicted_idx = torch.max(output, 1)
+    st.write(torch.max(output, 1))
     predicted_label = class_labels[predicted_idx.item()]
 
     return predicted_label
