@@ -26,14 +26,20 @@ class_labels = joblib.load(f'{DATA_PATH}all_kamera_store_models.sav')
 def classify_image(image):
     input_tensor = preprocess(image)
     input_batch = input_tensor.unsqueeze(0)
-
+    model.eval()
     with torch.no_grad():
         output = model(input_batch)
-    _, predicted_idx = torch.max(output, 1)
-    st.write(torch.max(output, 1))
-    predicted_label = class_labels[predicted_idx.item()]
+    # _, predicted_idx = torch.max(output, 1)
+    # return the top 5 predictions ranked by highest probabilities
+    prob = torch.nn.functional.softmax(output, dim = 1)[0] * 100
 
-    return predicted_label
+    _, indices = torch.sort(output, descending = True)
+    st.write(torch.max(output, 1))
+
+    return[(class_labels[idx], prob[idx].item()) for idx in indices[0][:5]]
+    # predicted_label = class_labels[predicted_idx.item()]
+
+    # return predicted_label
 
 def main():
     st.title("Image Classification App")
